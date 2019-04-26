@@ -1,0 +1,248 @@
+.dataDash {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding-right: 10px;
+  padding-left: 10px;
+  justify-content: space-between;
+
+  .forEqAndFeat{
+    display: flex;
+    justify-content: space-between;
+
+    .equipStatus {
+      display: flex;
+      justify-content: space-around;
+      flex: 1;
+      height: 70px;
+      background: antiquewhite;
+
+      .chosenName {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        width: 500px;
+
+        span {
+          font-family: 'Arimo', sans-serif;
+          font-style: italic;
+          display: block;
+        }
+      }
+
+      .filter {
+        display: flex;
+        flex-direction: column;
+        padding: 5px;
+
+        .forPeriodPicker {
+          align-self: center;
+        }
+
+        span {
+          font-family: 'Arimo', sans-serif;
+          font-style: italic;
+          align-self: center;
+          margin: 10px auto;
+        }
+      }
+    }
+
+    .forTabDisplay {
+      height: 70px;
+
+      .filter {
+        padding: 0;
+      }
+    }
+  }
+
+  .equipDashboardWrapper {
+    margin-top: 10px;
+    flex: 1;
+
+    .equipDashboard {
+      height: 100%;
+      //border-radius: 5px;
+      background: antiquewhite;
+      display: flex;
+      flex-direction: column;
+
+      .tables {
+        margin: 5px;
+        display: flex;
+        justify-content: space-around;
+        align-items: stretch;
+        font-family: 'Arimo', sans-serif;
+        font-style: italic;
+
+        .featureChoice {
+          flex: auto;
+          text-align: center;
+          //border-radius: 5px;
+          line-height: 3vh;
+        }
+
+        .featureChoice:hover {
+          background-color: #C0602F;
+          color: white;
+          transition: 0.3s;
+          cursor: pointer;
+        }
+
+        .active {
+          background-color: #C0602F;
+          color:white;
+        }
+      }
+
+      .stats {
+        display: flex;
+        align-items: stretch;
+        flex: 1;
+
+        .forButtons {
+          width: 200px;
+
+          .featuresButtons {
+            margin-top: 20px;
+            font-style: italic;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+
+            .equipName {
+              margin-bottom: 5px;
+              background-color: #793D00;
+              color: white;
+              padding: 10px;
+              //border-radius: 5px;
+              cursor: default;
+            }
+
+            .f-buttons {
+              padding-right: 1px;
+
+              .f-button {
+                margin: 5px auto;
+                border-bottom: 1px solid black;
+                border-top: 1px solid black;
+                //border-radius: 5px;
+                padding: 5px;
+                cursor: pointer;
+              }
+
+              .f-button:hover {
+                background-color: #C0602F;
+                color: #fff0f0;
+              }
+            }
+          }
+        }
+
+        .chart {
+          width: 90%;
+          height: 98%;
+        }
+      }
+      }
+
+      .monitoring {
+        display: flex;
+        flex-direction: column;
+        padding: 5px;
+        flex: 1;
+
+        .colorGradient {
+          height: 50px;
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 5px;
+          align-items: stretch;
+
+          div {
+            flex: 1;
+          }
+
+          .inactive {
+            background: $inactive;
+          }
+
+          .noErrors {
+            background: $noErrors;
+          }
+
+          .moreSuccess {
+            background: $moreSuccess;
+          }
+
+          .moreErrors {
+            background: $moreErrors;
+          }
+
+          .noSuccess {
+            background: $noSuccess;
+          }
+        }
+
+        .timeStep {
+          display: flex;
+          justify-content: space-between;
+
+          .step {
+            flex: 1;
+            text-align: center;
+          }
+        }
+
+        .chartInfo {
+          padding: 10px;
+          flex: 1;
+          display: flex;
+
+          .chart {
+            align-self: center;
+            flex: 1;
+
+            .l-chart {
+            }
+          }
+
+          .activityInfo {
+            width: 55%;
+            display: flex;
+            flex-direction: column;
+            overflow: auto;
+            //border: 1px solid black;
+            padding: 5px;
+
+            .logString {
+              margin-top: 5px;
+              margin-bottom: 5px;
+
+              &:nth-child(2n) {
+                background: #00ECFF;
+              }
+              //&:nth-child(2n - 1) {
+              //  background: #00c100;
+              //}
+            }
+          }
+        }
+
+      .forEquipInfo {
+        background: antiquewhite;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 0 30px;
+
+        .iconName {
+          margin-top: 10px;
+        }
+      }
+    }
+  }
+}
+
+@import 'DataDash/equipDashboard';

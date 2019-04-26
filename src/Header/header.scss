@@ -1,0 +1,131 @@
+.headerContainer {
+  height: 50px;
+  border-bottom: $color8 1px solid;
+
+  .header {
+    width: 100%;
+    height: 100%;
+    background-color: $color1;
+    padding-top: 1px;
+
+      #cssmenu {
+        padding: 0;
+        width: 300px;
+        margin-top: 10px;
+        margin-left: 20px;
+        height: 20px;
+
+        ul {
+          position: relative;
+          z-index: 597;
+          height: 100%;
+
+          li {
+            float: left;
+            min-height: 1px;
+            vertical-align: middle;
+            border: 1px solid black;
+          }
+
+          li.hover,
+          li:hover {
+            position: relative;
+            z-index: 599;
+            cursor: default;
+          }
+
+          ul {
+            visibility: hidden;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            z-index: 598;
+            width: 100%;
+
+            li {
+              float: none;
+              position: relative;
+              height: 20px;
+            }
+
+            ul {
+              top: 0;
+              left: auto;
+              right: -99.5%;
+            }
+
+            a {
+              border-top: 0 none;
+              line-height: 20px;
+            }
+          }
+        }
+
+        a {
+          display: block;
+          text-decoration: none;
+          background:  $colorForContent;
+          font-size: 12px;
+          padding: 0 20px;
+        }
+
+        a:hover {
+          color: white;
+          background-color: $color4;
+        }
+      }
+
+      #cssmenu ul li:hover > ul {
+        visibility: visible;
+      }
+
+      #cssmenu ul ul {
+        bottom: 0;
+        left: 0;
+      }
+      #cssmenu ul ul {
+        margin-top: 0;
+      }
+      #cssmenu ul ul li {
+        font-weight: normal;
+      }
+
+      #cssmenu > ul {
+        display: block;
+        height: 100%;
+      }
+
+      #cssmenu:after, #cssmenu ul:after {
+        content: '';
+        display: block;
+        clear: both;
+      }
+
+      #cssmenu ul ul {
+        text-transform: none;
+        min-width: 190px;
+      }
+
+      #cssmenu > ul > li > a {
+        line-height: 20px;
+      }
+
+      #cssmenu ul ul li:hover > a {
+        background-color: $color4;
+        color: white;
+      }
+
+      #cssmenu ul ul li.has-sub > a:after {
+        content: '+';
+        position: absolute;
+        top: 50%;
+        right: 16px;
+        margin-top: -8px;
+      }
+
+      #cssmenu ul li.has-sub > a:after {
+        content: '+';
+        margin-left: 5px;
+      }
+  }
+}
