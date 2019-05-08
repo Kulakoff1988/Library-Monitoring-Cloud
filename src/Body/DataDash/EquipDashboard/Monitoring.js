@@ -65,8 +65,13 @@ const Monitoring = new Lure.Content ({
             return render;
         };
 
+        /**
+         * @param {array} data
+         * @param equipID
+         */
         this.SetData = function(data, equipID) {
             if (equipID === `Reader`) {
+                data.GroupBy();
                 const deviceGroup = _.groupBy(data, item => item.DeviceID);
                 const gradient = Object.keys(deviceGroup).map(el => statusGradient(deviceGroup[el]));
                 console.log(gradient);

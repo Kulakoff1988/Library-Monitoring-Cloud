@@ -1,4 +1,5 @@
-const   statusPaths = {
+const   Buttons = require('./../Data/Buttons'),
+        statusPaths = {
             connected: "./img/icon-connected.png",
             attention: "./img/icon-attention.png",
             stop: "./img/icon-stop.png"
@@ -20,28 +21,41 @@ const   statusPaths = {
             SRC: 4,
             SBX: 5,
             SmartShelf: 6
-        };
+        },
         objectStats = string => {
             return string.split(', ')
+        },
+
+        addBranch = tree => {
+            if (!tree) return ``;
+            return tree.reduce((acc, item) => {
+                return acc + `<div class="containerForChecking" ${item.Children ? `data-children="true"` : ``}>
+                                <div class="forLabel l-button" data-objectdata="${item.Name}, ${item.ID}">
+                                    <div class="status" data-status="1">
+                                       <img src=${statusPaths.connected}>
+                                    </div>
+                                    <div class="flex-100 desktop">${item.Name}</div>
+                                    <div class="flex-100 tab">${item.Title}</div>
+                                    <div class="hideImg">
+                                       ${item.Children ? `<img src=${imgPaths.Hide} data-type="1" class="hide">` : ``}
+                                    </div>
+                                </div>
+                             <div class="nextCheckbox hidden" style="padding-left: 10px">${addBranch(item.Children)}</div>
+                             </div>`}, ``);
         };
 
-addBranch = tree => {
-    if (!tree) return ``;
-    return tree.reduce((acc, item) => {
-        return acc + `<div class="containerForChecking" ${item.Children ? `data-children="true"` : ``}>
-                        <div class="forLabel l-button" data-objectdata="${item.Name}, ${item.ID}">
-                            <div class="status" data-status="1">
-                               <img src=${statusPaths.connected}>
-                            </div>
-                            <div class="flex-100 desktop">${item.Name}</div>
-                            <div class="flex-100 tab">${item.Title}</div>
-                            <div class="hideImg">
-                               ${item.Children ? `<img src=${imgPaths.Hide} data-type="1" class="hide">` : ``}
-                            </div>
-                        </div>
-                     <div class="nextCheckbox hidden" style="padding-left: 10px">${addBranch(item.Children)}</div>
-                     </div>`}, ``).split('').join('');
-};
+        // addBranch = tree => {
+        //     if (!tree) return ``;
+        //     return tree.reduce((acc, item) => {
+        //         return acc +    `<div class="dropdown">
+        //                             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        //                               <span>${item.Name}</span>
+        //                             </button>
+        //                             <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+        //                                 <div class="dropdown-submenu"><span>${addBranch(item.Children)}</span></div>
+        //                             </div>
+        //                         </div>`}, ``);
+        // };
 
 const SideNavigator = new Lure.Content ({
     Name: `SideNavigator`,
@@ -83,228 +97,13 @@ const SideNavigator = new Lure.Content ({
 
 
     AfterBuild() {
-        this.Load.Show();
-        api.Devisces_Get(-1, -1, {
-            Then: res => {
-                const data = [{
-                    Name: `Библиотека №1`,
-                    ID: `Lib`,
-                    Title: `Б-№1`,
-                    Children: [
-                        {
-                            Name: `Ридеры/Планшеты`,
-                            ID: `Reader`,
-                            Title: `Rd/Tb`,
-                            Children: [
-                                {
-                                    Name: res[0].Name,
-                                    Title: `Pnt1`,
-                                    ID: res[0].ID
-                                },
-                                {
-                                    Name: res[1].Name,
-                                    Title: `Pnt2`,
-                                    ID: res[1].ID
-                                }
-                            ]
-                        },
-                        {
-                            Name: `ПКС-ворота`,
-                            ID: `Gates`,
-                            Title: `GTS`,
-                            Children: [
-                                {
-                                    Name: `Ворота-1`,
-                                    Title: `Gts1`,
-                                    ID: 1
-                                },
-                                {
-                                    Name: `Ворота-2`,
-                                    Title: `Gts2`,
-                                    ID: 2
-                                }
-                            ]
-                        },
-                        {
-                            Name: `Станции самостоятельного обслуживания`,
-                            ID: `SSS`,
-                            Title: `SSS`,
-                            Children: [
-                                {
-                                    Name: `ССО-1`,
-                                    Title: `SSS1`,
-                                    ID: 1
-                                },
-                                {
-                                    Name: `CCО-2`,
-                                    Title: `SSS2`,
-                                    ID: 2
-                                }
-                            ]
-                        },
-                        {
-                            Name: `Станции самостоятельного возврата`,
-                            ID: `SRS`,
-                            Title: `SRS`,
-                            Children: [
-                                {
-                                    Name: `ССВ-1`,
-                                    Title: `SRS1`,
-                                    ID: 1
-                                },
-                                {
-                                    Name: `CCВ-2`,
-                                    Title: `SRS2`,
-                                    ID: 2
-                                }
-                            ]
-                        },
-                        {
-                            Name: `Станции SMART-BOX`,
-                            ID: `SBX`,
-                            Title: `SMB`,
-                            Children: [
-                                {
-                                    Name: `С-SMB-1`,
-                                    Title: `SMB1`,
-                                    ID: 1
-                                },
-                                {
-                                    Name: `C-SMB-2`,
-                                    Title: `SMB2`,
-                                    ID: 2
-                                }
-                            ]
-                        },
-                        {
-                            Name: `Умные полки`,
-                            ID: `SmartShelf`,
-                            Title: `SS`,
-                            Children: [
-                                {
-                                    Name: `УП-1`,
-                                    Title: `SS1`,
-                                    ID: 1
-                                },
-                                {
-                                    Name: `УП-2`,
-                                    Title: `SS2`,
-                                    ID: 2
-                                }
-                            ]
-                        }]
-                },
-                    {
-                        Name: `Библиотека №2`,
-                        ID: `Lib`,
-                        Title: `Б-№2`,
-                        Children: [
-                            {
-                                Name: `Ридеры/Планшеты`,
-                                ID: `Reader`,
-                                Title: `Rd/Tb`,
-                                Children: [
-                                    {
-                                        Name: res[2].Name,
-                                        Title: `Pnt1`,
-                                        ID: res[2].ID
-                                    },
-                                    {
-                                        Name: `Точка-2`,
-                                        Title: `Pnt2`,
-                                        ID: 2
-                                    }
-                                ]
-                            },
-                            {
-                                Name: `ПКС-ворота`,
-                                ID: `Gates`,
-                                Title: `GTS`,
-                                Children: [
-                                    {
-                                        Name: `Ворота-1`,
-                                        Title: `Gts1`,
-                                        ID: 1
-                                    },
-                                    {
-                                        Name: `Ворота-2`,
-                                        Title: `Gts2`,
-                                        ID: 2
-                                    }
-                                ]
-                            },
-                            {
-                                Name: `Станции самостоятельного обслуживания`,
-                                ID: `SSS`,
-                                Title: `SSS`,
-                                Children: [
-                                    {
-                                        Name: `ССО-1`,
-                                        Title: `SSS1`,
-                                        ID: 1
-                                    },
-                                    {
-                                        Name: `CCО-2`,
-                                        Title: `SSS2`,
-                                        ID: 2
-                                    }
-                                ]
-                            },
-                            {
-                                Name: `Станции самостоятельного возврата`,
-                                ID: `SRS`,
-                                Title: `SRS`,
-                                Children: [
-                                    {
-                                        Name: `ССВ-1`,
-                                        Title: `SRS1`,
-                                        ID: 1
-                                    },
-                                    {
-                                        Name: `CCВ-2`,
-                                        Title: `SRS2`,
-                                        ID: 2
-                                    }
-                                ]
-                            },
-                            {
-                                Name: `Станции SMART-BOX`,
-                                ID: `SBX`,
-                                Title: `SMB`,
-                                Children: [
-                                    {
-                                        Name: `С-SMB-1`,
-                                        Title: `SMB1`,
-                                        ID: 1
-                                    },
-                                    {
-                                        Name: `C-SMB-2`,
-                                        Title: `SMB2`,
-                                        ID: 2
-                                    }
-                                ]
-                            },
-                            {
-                                Name: `Умные полки`,
-                                ID: `SmartShelf`,
-                                Title: `SS`,
-                                Children: [
-                                    {
-                                        Name: `УП-1`,
-                                        Title: `SS1`,
-                                        ID: 1
-                                    },
-                                    {
-                                        Name: `УП-2`,
-                                        Title: `SS2`,
-                                        ID: 2
-                                    }
-                                ]
-                            }]
-                    }];
-                this.Content.innerHTML = addBranch(data);
-            }
-        });
+        // this.Load.Show();
+        // api.Devisces_Get(-1, -1, {
+        //     Then: res => {
+        //         this.Content.innerHTML = addBranch(res);
+        //     }
+        // });
+        this.Content.innerHTML = addBranch(Buttons);
 
         this.AddEventListener(`click`, `.l-button`, (e) => {
             const currentButton = e.currentTarget;
