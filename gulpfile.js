@@ -18,8 +18,14 @@ const   gulp = require('gulp'),
 			html: [`./src/index.html`],
 			css: [`./src/index.scss`],
 			js: [`./src/app.js`],
-			api: [`./src/api/api.js`]
+			api: [`./src/api/api.js`],
+			lure: ['./src/lure/lure.css', './src/lure/lure.full.js', './src/lure/lure.full.js.map', './src/lure/lure.full.min.js', './src/lure/lure.min.css']
 		};
+
+gulp.task(`lure`, function () {
+	gulp.src(src.lure)
+		.pipe(gulp.dest(`./dist/lure`))
+});
 
 gulp.task(`html`, function() {
 	gulp.src(src.html)
@@ -48,9 +54,9 @@ gulp.task(`api`, function() {
 });
 
 gulp.task(`watcher`, function() {
-	gulp.watch(src.html, [`html`]);
-	gulp.watch(`./src/**/*.scss`, [`css`]);
-	gulp.watch(`./src/**/*.js`, [`app`]);
+	watch(src.html, [`html`]);
+	watch(`./src/**/*.scss`, [`css`]);
+	watch(`./src/**/*.js`, [`app`]);
 });
 
-gulp.task(`default`, [`html`, `css`, `app`, `api`, `watcher`]);
+gulp.task(`default`, [`html`, `css`, `app`, `api`, `lure`, `watcher`]);

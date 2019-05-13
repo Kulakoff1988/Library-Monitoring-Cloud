@@ -47,7 +47,6 @@ const   Buttons = require('./../Data/Buttons'),
 
         addBranch = (tree, parentId) => {
             const id = uniqueId();
-            if (!tree) return ``;
             return tree.reduce((acc, item) => {
                 return acc +    `<div class="card">
                                    <div class="card-header" id="${item.ID}">
