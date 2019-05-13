@@ -1,8 +1,14 @@
 Lure.Application.Run();
 api.Login(`Admin`, `pass2root`);
 const apiGetDevOld = api.Devisces_Get;
+api.Devisces_Data_Get(-1, -1, {
+    Then: res => {
+        console.log(res);
+    }
+});
 api.Devisces_Get = async () => {
     let res = await apiGetDevOld(-1, -1);
+    console.log(res);
     return [{
                 Name: `Библиотека №1`,
                 ID: `Lib`,
@@ -11,7 +17,7 @@ api.Devisces_Get = async () => {
                     {
                         Name: `Ридеры/Планшеты`,
                         ID: `Reader`,
-                        Title: `Rd/Tb`,
+                        Title: `Rd`,
                         Children: [
                             {
                                 Name: res[0].Name,
@@ -119,7 +125,7 @@ api.Devisces_Get = async () => {
                         {
                             Name: `Ридеры/Планшеты`,
                             ID: `Reader`,
-                            Title: `Rd/Tb`,
+                            Title: `Rd  `,
                             Children: [
                                 {
                                     Name: res[2].Name,

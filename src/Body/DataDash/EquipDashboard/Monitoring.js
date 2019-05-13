@@ -1,11 +1,9 @@
-const _ = require('lodash');
-
 const statusGradient = data => {
     const parent = document.createElement(`div`);
     return data.reduce((acc, item) => {
         const child = document.createElement(`div`);
-        if (item.status) {
-            child.classList.add(item.status);
+        if (item.Status) {
+            child.classList.add(item.Status);
             parent.appendChild(child);
         }
         else {
@@ -71,10 +69,8 @@ const Monitoring = new Lure.Content ({
          */
         this.SetData = function(data, equipID) {
             if (equipID === `Reader`) {
-                data.GroupBy();
-                const deviceGroup = _.groupBy(data, item => item.DeviceID);
+                const deviceGroup = data.GroupBy(data, item => item.DeviceID);
                 const gradient = Object.keys(deviceGroup).map(el => statusGradient(deviceGroup[el]));
-                console.log(gradient);
                 this.Gradient = this.Select(`.colorGradient`);
                 const children = statusGradient(data);
                 this.Gradient.innerHTML = children.innerHTML;

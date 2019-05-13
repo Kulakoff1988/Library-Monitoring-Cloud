@@ -1,5 +1,4 @@
 const   Buttons = require('./../Data/Buttons'),
-        { uniqueId } = require('lodash'),
         typeDict = {
             Lib: 0,
             Reader: 1,
@@ -14,17 +13,16 @@ const   Buttons = require('./../Data/Buttons'),
         },
 
         addBranch = (tree, parentId) => {
-            const id = uniqueId();
             return tree.reduce((acc, item) => {
                 return acc +    `<div class="card">
                                    <div class="card-header" id="${item.ID}">
-                                        <button class="btn" type="button" data-toggle="collapse" data-objectdata="${item.Name}, ${item.ID}, 1" data-target="#${item.Title}${id}" aria-expanded="true" aria-controls="${item.Title}${id}">
+                                        <button class="btn" type="button" data-toggle="collapse" data-objectdata="${item.Name}, ${item.ID}, 1" data-target="#${item.Title}${item.ID}" aria-expanded="true" aria-controls="${item.Title}${item.ID}">
                                             <span>${item.Name}</span>
                                         </button>
                                    </div>
-                                   ${item.Children ? `<div id="${item.Title}${id}" class="collapse" aria-labelledby="${item.ID}" data-parent="#${parentId}">
+                                   ${item.Children ? `<div id="${item.Title}${item.ID}" class="collapse" aria-labelledby="${item.ID}" data-parent="#${parentId}">
                                                           <div class="card-body">
-                                                             ${addBranch(item.Children, `${item.Title}${id}`)}
+                                                             ${addBranch(item.Children, `${item.Title}${item.ID}`)}
                                                           </div>
                                                         </div>` : ``}
                                 </div>`}, ``);
@@ -43,8 +41,6 @@ const SideNavigator = new Lure.Content ({
         },
         set Tree(tree) {
             this.State.Tree = tree;
-            this.Content.innerHTML = addBranch(tree);
-            this._TreeHandler();
         }
     },
 
@@ -69,26 +65,28 @@ const SideNavigator = new Lure.Content ({
 
 
     AfterBuild() {
-        this.TargetForMenu = this.Select(`.accordion`);
         // this.Load.Show();
-        // api.Devisces_Get(-1, -1, {
-        //     Then: res => {
-        //         this.TargetForMenu.innerHTML = addBranch(res, `accordion`);;
-        //     }
-        // });
+        this.TargetForMenu = this.Select(`.accordion`);
         this.TargetForMenu.innerHTML = addBranch(this.State.Tree, `accordion`);
+        console.log(`before api`);
+        api.Devisces_Get(-1, -1, {
+            Then: res => {
+                this.TargetForMenu.innerHTML = addBranch(res, `accordion`);
+                // this.Load.Hide();
+            }
+        });
 
         this.AddEventListener(`click`, `.btn`, (e) => {
             const currentButton = e.currentTarget;
-            const status = {
-                equipName: getObjectStats(currentButton.dataset[`objectdata`])[0],
-                equipStatus: getObjectStats(currentButton.dataset[`objectdata`])[1],
-                equipID: getObjectStats(currentButton.dataset[`objectdata`])[1]
+            const equipDescription = {
+                Name: getObjectStats(currentButton.dataset[`objectdata`])[0],
+                Status: getObjectStats(currentButton.dataset[`objectdata`])[1],
+                ID: getObjectStats(currentButton.dataset[`objectdata`])[1]
             };
-            this.GetEquipStatus(status);
+            this.GetEquipStatus(equipDescription);
             const hasChildren = !!currentButton.parentNode.dataset[`children`];
-            const deviceID = hasChildren ? -1 : status.equipID;
-            const typeID = hasChildren ? typeDict[status.equipID] : -1;
+            const deviceID = hasChildren ? -1 : equipDescription.ID;
+            const typeID = hasChildren ? typeDict[equipDescription.ID] : -1;
             // api.Devisces_Data_Get(deviceID, typeID, {
             //     Then: res => {
             //         const currentDate = this.State.Date[0];
@@ -100,25 +98,25 @@ const SideNavigator = new Lure.Content ({
             //                 filteredDate.map(el => {
             //                     el.DateValue = Lure.Date(el.DateValue).Format(`DD.MM.YYYY`);
             //                     if (el.Err_Count === 0) {
-            //                         el.status = `noErrors`;
+            //                         el.Status = `noErrors`;
             //                         el.label = `Работает без ошибок`;
             //                         el.color = `#00FF43`;
             //                         return;
             //                     }
             //                     if (el.OK_Count === 0) {
-            //                         el.status = `noSuccess`;
+            //                         el.Status = `noSuccess`;
             //                         el.label = `Не работает`;
             //                         el.color = `#FF2300`;
             //                         return;
             //                     }
             //                     if (el.OK_Count > el.Err_Count) {
-            //                         el.status = `moreSuccess`;
+            //                         el.Status = `moreSuccess`;
             //                         el.label = `Есть ошибки`;
             //                         el.color = `#30BE56`;
             //                         return;
             //                     }
             //                     if (el.OK_Count < el.Err_Count) {
-            //                         el.status = `moreErrors`;
+            //                         el.Status = `moreErrors`;
             //                         el.label = `Требует отладки`;
             //                         el.color = `#FF9500`;
             //                     }
@@ -129,10 +127,10 @@ const SideNavigator = new Lure.Content ({
             //                         result.push(currentData);
             //                     }
             //                     else {
-            //                         result.push({status: `inactive`, label: `Не активно`, color: `#4D4D4D`});
+            //                         result.push({Status: `inactive`, label: `Не активно`, color: `#4D4D4D`});
             //                     }
             //                 }
-            //                 Monitoring.SetData(result, status.equipID);
+            //                 Monitoring.SetData(result, Status.ID);
             //                 Chart.SetData(result);
             //                 break;
             //             case `no data`:

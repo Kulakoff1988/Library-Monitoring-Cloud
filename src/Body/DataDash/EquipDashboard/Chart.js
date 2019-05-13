@@ -20,6 +20,7 @@ LegendName = n => {
 };
 
 const Chart = new Lure.Content({
+    Name: `Chart`,
     Target:`.equipDashboard`,
     Type: `info`,
     // Visible: true,
@@ -87,12 +88,12 @@ const Chart = new Lure.Content({
         };
 
         this.ViewStatus = function (status) {
-            this.State.Name = `${status.equipName}:`;
-            this.State.CurrentButtons = Buttons.find(el => el.id === status.equipID) ? Buttons.find(el => el.id === status.equipID).value : this.State.CurrentButtons;
+            this.State.Name = `${status.Name}:`;
+            this.State.CurrentButtons = Buttons.find(el => el.id === status.ID) ? Buttons.find(el => el.id === status.ID).value : this.State.CurrentButtons;
             this.Proto.Refresh();
             this.Buttons = this.SelectAll(`.f-button`);
             for (let button of this.Buttons) {
-                button.dataset[`id`] = status.equipID;
+                button.dataset[`id`] = status.ID;
             }
         }
     }

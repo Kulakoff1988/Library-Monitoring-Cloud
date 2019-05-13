@@ -78,7 +78,7 @@ let api = {
             xhr.timeout = api.timeout;
             xhr.onload = function () {
                 let result = xhr.response;
-                if (xhr.status === 200 && xhr.responseType !== 'blob' && xhr.response)
+                if (xhr.Status === 200 && xhr.responseType !== 'blob' && xhr.response)
                     result = JSON.parse(xhr.response);
                 if (api.debug && ( Object.getOwnPropertyNames(api.debugExcludes).indexOf(method) < 0 || (api.debugExcludes[method] && !Lure.Object.isEmpty(result, true)) )){
                     let SpaceCount = 32-method.length;
@@ -90,18 +90,18 @@ let api = {
                     console.log('%c[api]'+method+' '.repeat(SpaceCount>0? SpaceCount: 1)+'<- ', 'color: #000',  result);
                 }
 
-                if (xhr.status === 200)
+                if (xhr.Status === 200)
                 {
                     resolve( result);
                 }
-                else if (xhr.status === 403){
+                else if (xhr.Status === 403){
                     reject('[api '+method+'] Error 403: Forbidden');
                     if (api.onerror)
                         api.onerror(null, method, params, xhr);
                     if (api.onDeny)
                         api.onDeny(method, params)
                 }
-                else if (xhr.status === 401)
+                else if (xhr.Status === 401)
                 {
                     document.cookie = 'ssid=unauthorized;path=/';
                     reject('[api '+method+'] Error 401: Unauthorized');
@@ -111,7 +111,7 @@ let api = {
                         api.onUnauth(method);
                 }
                 else {
-                    reject('[api '+ method+'] Error '+xhr.status+': '+this.statusText);
+                    reject('[api '+ method+'] Error '+xhr.Status+': '+this.statusText);
                     if (api.onerror)
                         api.onerror(null, method, params, xhr);
                 }
