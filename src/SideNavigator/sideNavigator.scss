@@ -2,10 +2,13 @@
   width: 220px;
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
-  overflow-x: visible;
+  overflow: hidden;
   background: antiquewhite;
-  padding-right: 1px;
+  //padding-right: 1px;
+
+  .accordion {
+    //overflow-y: auto;
+  }
 
   .containerForChecking {
     display: flex;

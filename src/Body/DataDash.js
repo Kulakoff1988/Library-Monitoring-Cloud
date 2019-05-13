@@ -5,9 +5,7 @@ const DataDash = new Lure.Content ({
                     <div class="forEqAndFeat">
                         <div class="equipStatus">
                             <div class="chosenName">
-                                <div class="statusIcon">
-                                    <img src="./img/icon-allChecked.png" alt="test">
-                                </div>
+                                <div class="statusIcon"></div>
                                 <span>{{Name}}</span>
                             </div>
                             <div class="filter">
