@@ -54,9 +54,9 @@ gulp.task(`api`, function() {
 });
 
 gulp.task(`watcher`, function() {
-	watch(src.html, [`html`]);
-	watch(`./src/**/*.scss`, [`css`]);
-	watch(`./src/**/*.js`, [`app`]);
+	gulp.watch(src.html, [`html`]);
+    gulp.watch(`./src/**/*.scss`, [`css`]);
+    gulp.watch(`./src/**/*.js`, [`app`]);
 });
 
 gulp.task(`default`, [`html`, `css`, `app`, `api`, `lure`, `watcher`]);

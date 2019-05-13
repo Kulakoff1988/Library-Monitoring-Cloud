@@ -50,7 +50,7 @@ const   Buttons = require('./../Data/Buttons'),
             return tree.reduce((acc, item) => {
                 return acc +    `<div class="card">
                                    <div class="card-header" id="${item.ID}">
-                                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#${item.Title}${id}" aria-expanded="true" aria-controls="${item.Title}${id}">
+                                    <button class="btn" type="button" data-toggle="collapse" data-target="#${item.Title}${id}" aria-expanded="true" aria-controls="${item.Title}${id}">
                                       ${item.Name}
                                     </button>
                                    </div>
