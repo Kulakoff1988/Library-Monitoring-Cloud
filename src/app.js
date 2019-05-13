@@ -220,6 +220,6 @@ api.Devisces_Get = async () => {
                         }]
                 }];
 };
-require('./Header/Header');
+
 require('./SideNavigator/SideNavigator');
 require('./Body/DataDash');

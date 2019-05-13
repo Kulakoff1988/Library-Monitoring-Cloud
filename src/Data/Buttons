@@ -40,7 +40,7 @@ const Buttons = [{
         {
             Name: `Станции самостоятельного обслуживания`,
             ID: `SSS`,
-            Title: `SServiceS`,
+            Title: `SSS`,
             Children: [
                 {
                     Name: `ССО-1`,
@@ -57,7 +57,7 @@ const Buttons = [{
         {
             Name: `Станции самостоятельного возврата`,
             ID: `SRS`,
-            Title: `SReturnS`,
+            Title: `SRS`,
             Children: [
                 {
                     Name: `ССВ-1`,
@@ -148,7 +148,7 @@ const Buttons = [{
             {
                 Name: `Станции самостоятельного обслуживания`,
                 ID: `SSS`,
-                Title: `SServiceS`,
+                Title: `SSS`,
                 Children: [
                     {
                         Name: `ССО-1`,
@@ -165,7 +165,7 @@ const Buttons = [{
             {
                 Name: `Станции самостоятельного возврата`,
                 ID: `SRS`,
-                Title: `SReturnS`,
+                Title: `SRS`,
                 Children: [
                     {
                         Name: `ССВ-1`,
