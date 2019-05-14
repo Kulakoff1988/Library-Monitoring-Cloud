@@ -1,5 +1,4 @@
-const   Buttons = require('../../../Data/EquipStats'),
-        data = [1, 2, 8, 4, 5, 7, 4, 5, 15, 20, 14, 19, 17, 15, 15, 13, 11, 18, 19, 16, 12, 10, 14, 16].reverse();
+const   Buttons = require('../../../Data/EquipStats');
 
 const timeScale = () => {
     const result = [];
@@ -23,7 +22,7 @@ const Chart = new Lure.Content({
     Name: `Chart`,
     Target:`.equipDashboard`,
     Type: `info`,
-    // Visible: true,
+    Visible: true,
     Control: {
         Target: `#stats`
     },
@@ -56,11 +55,10 @@ const Chart = new Lure.Content({
                 Visible: true,
                 Data: timeScale()
             },
-            // AxisY: {Step: 1},
             Series: [{
                 Name: 'Количество считываний меток',
                 Color: '#798D00',
-                Data: [1,114,3,5,4,22,85,10,17,15,9,10,12,11],
+                Data: [],
             }],
             Tooltip: {
                 Format: Tip =>
@@ -87,13 +85,13 @@ const Chart = new Lure.Content({
             this.chart.Redraw();
         };
 
-        this.ViewStatus = function (status) {
-            this.State.Name = `${status.Name}:`;
-            this.State.CurrentButtons = Buttons.find(el => el.id === status.ID) ? Buttons.find(el => el.id === status.ID).value : this.State.CurrentButtons;
+        this.ViewStatus = function (equipInfo) {
+            this.State.Name = `${equipInfo.Name}:`;
+            this.State.CurrentButtons = Buttons.find(el => el.id === equipInfo.ID) ? Buttons.find(el => el.id === equipInfo.ID).value : this.State.CurrentButtons;
             this.Proto.Refresh();
             this.Buttons = this.SelectAll(`.f-button`);
             for (let button of this.Buttons) {
-                button.dataset[`id`] = status.ID;
+                button.dataset[`id`] = equipInfo.ID;
             }
         }
     }

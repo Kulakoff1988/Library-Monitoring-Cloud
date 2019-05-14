@@ -42,8 +42,8 @@ const DataDash = new Lure.Content ({
             Max: new Date(),
             OnConfirm: () => {
                 const dates = this._PeriodPicker.Date.map(date => Lure.Date(date).Format(`DD.MM.YYYY`));
-                SideNavigator.State.Date = dates;
-            }
+                SideNavigator.Date = dates;
+    }
         });
     }
 });

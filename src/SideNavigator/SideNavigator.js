@@ -1,10 +1,9 @@
-const   Buttons = require('./../Data/Buttons'),
-        typeDict = {
+const   typeDict = {
             Lib: 0,
             Reader: 1,
-            GTS: 2,
+            Gates: 2,
             SSS: 3,
-            SRC: 4,
+            SRS: 4,
             SBX: 5,
             SmartShelf: 6
         },
@@ -12,11 +11,11 @@ const   Buttons = require('./../Data/Buttons'),
             return string.split(', ');
         },
 
-        addBranch = (tree, parentId) => {
+        addBranch = (tree, parentId = `accordion`) => {
             return tree.reduce((acc, item) => {
                 return acc +    `<div class="card">
                                    <div class="card-header" id="${item.ID}">
-                                        <button class="btn" type="button" data-toggle="collapse" data-objectdata="${item.Name}, ${item.ID}, 1" data-target="#${item.Title}${item.ID}" aria-expanded="true" aria-controls="${item.Title}${item.ID}">
+                                        <button class="btn" type="button" data-toggle="collapse" data-haschildren="${!!item.Children}" data-objectdata="${item.Name}, ${item.ID}" data-target="#${item.Title}${item.ID}" aria-expanded="true" aria-controls="${item.Title}${item.ID}">
                                             <span>${item.Name}</span>
                                         </button>
                                    </div>
@@ -32,7 +31,7 @@ const SideNavigator = new Lure.Content ({
     Name: `SideNavigator`,
     Target: `.body`,
     Content:    `<div id="sideNavigator">
-                    <div class="accordion" id="accordion"></div>
+                    <div class="accordion" id="accordion">{{Tree}}</div>
                 </div>`,
 
     GetSet: {
@@ -41,13 +40,23 @@ const SideNavigator = new Lure.Content ({
         },
         set Tree(tree) {
             this.State.Tree = tree;
+            this.Proto.Refresh();
+        },
+        set Date(date) {
+            this.State.Date = date;
         }
     },
 
     State: {
-        Tree: Buttons,
+        Tree: [],
         Date: [Lure.Date(new Date).Format(`DD.MM.YYYY`)],
         DataExist: void 0
+    },
+
+    PropFormat: {
+        Tree: tree => {
+            return addBranch(tree);
+        }
     },
 
     Methods() {
@@ -63,82 +72,80 @@ const SideNavigator = new Lure.Content ({
 
     LoadTarget: ``,
 
-
     AfterBuild() {
-        // this.Load.Show();
-        this.TargetForMenu = this.Select(`.accordion`);
-        this.TargetForMenu.innerHTML = addBranch(this.State.Tree, `accordion`);
-        console.log(`before api`);
-        api.Devisces_Get(-1, -1, {
-            Then: res => {
-                this.TargetForMenu.innerHTML = addBranch(res, `accordion`);
-                // this.Load.Hide();
-            }
+        this.Load.Show();
+        api.Devisces_Get(-1, -1)
+            .then(res => {
+                this.Tree = res;
+                this.Load.Hide();
         });
 
         this.AddEventListener(`click`, `.btn`, (e) => {
             const currentButton = e.currentTarget;
+            if (this.currentButtonMemo === currentButton) return;
+            const objectData = getObjectStats(currentButton.dataset[`objectdata`]);
             const equipDescription = {
-                Name: getObjectStats(currentButton.dataset[`objectdata`])[0],
-                Status: getObjectStats(currentButton.dataset[`objectdata`])[1],
-                ID: getObjectStats(currentButton.dataset[`objectdata`])[1]
+                Name: objectData[0],
+                ID: objectData[1]
             };
             this.GetEquipStatus(equipDescription);
-            const hasChildren = !!currentButton.parentNode.dataset[`children`];
+            const hasChildren = currentButton.dataset[`haschildren`] === `true`;
             const deviceID = hasChildren ? -1 : equipDescription.ID;
             const typeID = hasChildren ? typeDict[equipDescription.ID] : -1;
-            // api.Devisces_Data_Get(deviceID, typeID, {
-            //     Then: res => {
-            //         const currentDate = this.State.Date[0];
-            //         const filteredDate = res.filter(el => Lure.Date(el.DateValue).Format(`DD.MM.YYYY`) === currentDate);
-            //         this.State.DataExist = filteredDate.length > 0 ? `exist` : `no data`;
-            //         const result = [];
-            //         switch (this.State.DataExist) {
-            //             case `exist`:
-            //                 filteredDate.map(el => {
-            //                     el.DateValue = Lure.Date(el.DateValue).Format(`DD.MM.YYYY`);
-            //                     if (el.Err_Count === 0) {
-            //                         el.Status = `noErrors`;
-            //                         el.label = `Работает без ошибок`;
-            //                         el.color = `#00FF43`;
-            //                         return;
-            //                     }
-            //                     if (el.OK_Count === 0) {
-            //                         el.Status = `noSuccess`;
-            //                         el.label = `Не работает`;
-            //                         el.color = `#FF2300`;
-            //                         return;
-            //                     }
-            //                     if (el.OK_Count > el.Err_Count) {
-            //                         el.Status = `moreSuccess`;
-            //                         el.label = `Есть ошибки`;
-            //                         el.color = `#30BE56`;
-            //                         return;
-            //                     }
-            //                     if (el.OK_Count < el.Err_Count) {
-            //                         el.Status = `moreErrors`;
-            //                         el.label = `Требует отладки`;
-            //                         el.color = `#FF9500`;
-            //                     }
-            //                 });
-            //                 for (let i = 0; i < 24; i++) {
-            //                     if (filteredDate.find(el => el.HourValue === i)) {
-            //                         const currentData = filteredDate.find(el => el.HourValue === i);
-            //                         result.push(currentData);
-            //                     }
-            //                     else {
-            //                         result.push({Status: `inactive`, label: `Не активно`, color: `#4D4D4D`});
-            //                     }
-            //                 }
-            //                 Monitoring.SetData(result, Status.ID);
-            //                 Chart.SetData(result);
-            //                 break;
-            //             case `no data`:
-            //                 Monitoring.Proto.SetProperty(`InfoMessage`, `За выбранный период нет данных, либо устройство было неактивно`);
-            //                 break;
-            //         }
-            //     }
-            // });
+            api.Devisces_Data_Get(deviceID, typeID, {
+                Then: res => {
+                    const Date = this.State.Date[0];
+                    const filteredByDate = res.filter(el => Lure.Date(el.DateValue).Format(`DD.MM.YYYY`) === Date);
+                    this.State.DataExist = filteredByDate.length > 0 ? `exist` : `no data`;
+                    const result = [];
+                    switch (this.State.DataExist) {
+                        case `exist`:
+                            filteredByDate.map(el => {
+                                el.DateValue = Lure.Date(el.DateValue).Format(`DD.MM.YYYY`);
+                                if (el.Err_Count === 0) {
+                                    el.Status = `noErrors`;
+                                    el.label = `Работает без ошибок`;
+                                    el.color = `#00FF43`;
+                                    return;
+                                }
+                                if (el.OK_Count === 0) {
+                                    el.Status = `noSuccess`;
+                                    el.label = `Не работает`;
+                                    el.color = `#FF2300`;
+                                    return;
+                                }
+                                if (el.OK_Count > el.Err_Count) {
+                                    el.Status = `moreSuccess`;
+                                    el.label = `Есть ошибки`;
+                                    el.color = `#30BE56`;
+                                    return;
+                                }
+                                if (el.OK_Count < el.Err_Count) {
+                                    el.Status = `moreErrors`;
+                                    el.label = `Требует отладки`;
+                                    el.color = `#FF9500`;
+                                }
+                            });
+                            for (let i = 0; i < 24; i++) {
+                                if (filteredByDate.find(el => el.HourValue === i)) {
+                                    const currentData = filteredByDate.find(el => el.HourValue === i);
+                                    result.push(currentData);
+                                }
+                                else {
+                                    result.push({Status: `inactive`, label: `Не активно`, color: `#4D4D4D`});
+                                }
+                            }
+                            Monitoring.SetData(result);
+                            Chart.SetData(result);
+                            break;
+                        case `no data`:
+                            Monitoring.Proto.SetProperty(`InfoMessage`, `За выбранный период нет данных, либо устройство было неактивно`);
+                            Chart.SetData([]);
+                            break;
+                    }
+                }
+            });
+            this.currentButtonMemo = currentButton;
         });
     }
 });

@@ -45,7 +45,10 @@ gulp.task(`css`, function() {
 });
 
 gulp.task(`RFID_Monitoring`, function() {
-	browserify(src.js)
+	browserify({
+		entries: src.js,
+		debug: true
+	})
 	.bundle()
 		.on(`error`, function (e) {
 			console.log(e.toString());

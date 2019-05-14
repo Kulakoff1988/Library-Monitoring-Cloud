@@ -18,7 +18,7 @@ const Monitoring = new Lure.Content ({
     Name: `Monitoring`,
     Target: `.equipDashboard`,
     Type: `info`,
-    Visible: true,
+    // Visible: true,
     Control: {
         Target: `#monitoring`
     },
