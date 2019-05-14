@@ -314,23 +314,25 @@ let api = {
       @param {ApiTSHandlersCallbacks} [Handlers]
       @return {Promise<Devices_TableDTO[]>} 
     */            
-    Devisces_Get: function(DeviceID, DeviceTypeID, Handlers)         
+    Devices_Get: function(DeviceID, DeviceTypeID, Handlers)         
     {                                            
                                    
                       
-        return api.call(api.remote_call_promise('Devisces_Get',  {DeviceID:DeviceID, DeviceTypeID:DeviceTypeID}, false), Handlers);     
+        return api.call(api.remote_call_promise('Devices_Get',  {DeviceID:DeviceID, DeviceTypeID:DeviceTypeID}, false), Handlers);     
     },
     /**
       @param {number}DeviceID
       @param {number}DeviceTypeID
+      @param {Date}DateStart
+      @param {Date}DateFinish
       @param {ApiTSHandlersCallbacks} [Handlers]
       @return {Promise<Devices_Table_DataDTO[]>} 
     */            
-    Devisces_Data_Get: function(DeviceID, DeviceTypeID, Handlers)         
+    Devices_Data_Get: function(DeviceID, DeviceTypeID, DateStart, DateFinish, Handlers)         
     {                                            
                                    
                       
-        return api.call(api.remote_call_promise('Devisces_Data_Get',  {DeviceID:DeviceID, DeviceTypeID:DeviceTypeID}, false), Handlers);     
+        return api.call(api.remote_call_promise('Devices_Data_Get',  {DeviceID:DeviceID, DeviceTypeID:DeviceTypeID, DateStart:Lure.Date(DateStart).DateCs, DateFinish:Lure.Date(DateFinish).DateCs}, false), Handlers);     
     },
-};
+}
 

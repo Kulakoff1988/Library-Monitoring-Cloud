@@ -50,6 +50,7 @@ class web_HistoryMasterGet_Result{
 class Devices_TableDTO{
   ID: number;
   Name: string;
+  TypeID: number;
 }
 
 class Devices_Table_DataDTO{
@@ -90,7 +91,7 @@ interface ApiTS {
   StaticContent(content:string, Handlers?: ApiTSHandlersCallbacks<Blob>): Promise<Blob>;
   StaticContent2(content2:string, Handlers?: ApiTSHandlersCallbacks<Blob>): Promise<Blob>;
   Cache_GetMasterHistoryLast(LastID:number, Handlers?: ApiTSHandlersCallbacks<web_HistoryMasterGet_Result[]>): Promise<web_HistoryMasterGet_Result[]>;
-  Devisces_Get(DeviceID:number, DeviceTypeID:number, Handlers?: ApiTSHandlersCallbacks<Devices_TableDTO[]>): Promise<Devices_TableDTO[]>;
-  Devisces_Data_Get(DeviceID:number, DeviceTypeID:number, Handlers?: ApiTSHandlersCallbacks<Devices_Table_DataDTO[]>): Promise<Devices_Table_DataDTO[]>;
+  Devices_Get(DeviceID:number, DeviceTypeID:number, Handlers?: ApiTSHandlersCallbacks<Devices_TableDTO[]>): Promise<Devices_TableDTO[]>;
+  Devices_Data_Get(DeviceID:number, DeviceTypeID:number, DateStart:Date, DateFinish:Date, Handlers?: ApiTSHandlersCallbacks<Devices_Table_DataDTO[]>): Promise<Devices_Table_DataDTO[]>;
 }
 
