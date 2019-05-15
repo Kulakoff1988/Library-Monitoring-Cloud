@@ -15,12 +15,16 @@ const   gulp = require('gulp'),
 	    include = require("gulp-include"),
 		watch = require('gulp-watch'),
 		src = {
-			html: [`./src/index.html`],
-			css: [`./src/index.scss`],
-			js: [`./src/RFID_Monitoring.js`],
-			api: [`./src/api/api.js`],
-			lure: ['./src/lure/lure.css', './src/lure/lure.full.js', './src/lure/lure.full.js.map', './src/lure/lure.full.min.js', './src/lure/lure.min.css'],
-			img: [`./src/img/**/*`]
+			html: [`./src/RFID_Monitoring/index.html`],
+			css: [`./src/RFID_Monitoring/index.scss`],
+			js: [`./src/app.js`],
+			api: [`./src/RFID_Monitoring/api/api.js`],
+			lure: ['./src/RFID_Monitoring/lure/lure.css',
+				'./src/RFID_Monitoring/lure/lure.full.js',
+				'./src/RFID_Monitoring/lure/lure.full.js.map',
+				'./src/RFID_Monitoring/lure/lure.full.min.js',
+				'./src/RFID_Monitoring/lure/lure.min.css'],
+			img: [`./src/RFID_Monitoring/img/**/*`]
 		};
 
 gulp.task(`lure`, function () {
@@ -44,7 +48,7 @@ gulp.task(`css`, function() {
 	.pipe(gulp.dest(`./dist`))
 });
 
-gulp.task(`RFID_Monitoring`, function() {
+gulp.task(`app`, function() {
 	browserify({
 		entries: src.js,
 		debug: true
@@ -53,7 +57,7 @@ gulp.task(`RFID_Monitoring`, function() {
 		.on(`error`, function (e) {
 			console.log(e.toString());
         })
-	.pipe(source(`RFID_Monitoring.js`))
+	.pipe(source(`app.js`))
 	.pipe(gulp.dest(`./dist`))
 });
 
@@ -65,7 +69,7 @@ gulp.task(`api`, function() {
 gulp.task(`watcher`, function() {
 	gulp.watch(src.html, [`html`]);
     gulp.watch(`./src/**/*.scss`, [`css`]);
-    gulp.watch(`./src/**/*.js`, [`RFID_Monitoring`]);
+    gulp.watch(`./src/**/*.js`, [`app`]);
 });
 
-gulp.task(`default`, [`html`, `css`, `RFID_Monitoring`, `image`, `api`, `lure`, `watcher`]);
+gulp.task(`default`, [`html`, `css`, `app`, `image`, `api`, `lure`, `watcher`]);
