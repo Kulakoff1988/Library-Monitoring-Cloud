@@ -1,12 +1,4 @@
-const   Buttons = require('../../../Data/EquipStats');
-
-const timeScale = () => {
-    const result = [];
-    for (let i = 0; i <= 23; i++) {
-        result.push(`${i}:00`);
-    }
-    return result;
-};
+const   Buttons = require('../../../Aggregations/EquipStats');
 
 LegendName = n => {
     const text_forms = ['считываение', 'считывания', 'считываний'];
@@ -53,7 +45,7 @@ const Chart = new Lure.Content({
             Grid: {Visible: true},
             AxisX: {
                 Visible: true,
-                Data: timeScale()
+                Data: []
             },
             Series: [{
                 Name: 'Количество считываний меток',
@@ -76,12 +68,9 @@ const Chart = new Lure.Content({
     },
 
     Methods () {
-        this.SetData = function (data) {
-            const result = data.reduce((acc, item) => {
-                acc.push(item.Read_Count ? item.Read_Count : 0);
-                return acc;
-            }, []);
-            this.chart.Options.Series[0].Data = result;
+        this.SetData = function (data = [], axisXData = []) {
+            this.chart.Options.Series[0].Data = data;
+            this.chart.Options.AxisX.Data = axisXData;
             this.chart.Redraw();
         };
 
@@ -97,6 +86,5 @@ const Chart = new Lure.Content({
     }
 });
 
-window.timeScale = timeScale();
 window.Chart = Chart;
 module.exports = Chart;

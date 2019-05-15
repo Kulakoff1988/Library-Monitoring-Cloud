@@ -1,3 +1,4 @@
+const aggregateData = require('../Aggregations/aggregateData');
 const   typeDict = {
             Lib: 0,
             Reader: 1,
@@ -10,7 +11,6 @@ const   typeDict = {
         getObjectStats = string => {
             return string.split(', ');
         },
-
         addBranch = (tree, parentId = `accordion`) => {
             return tree.reduce((acc, item) => {
                 return acc +    `<div class="card">
@@ -44,12 +44,15 @@ const SideNavigator = new Lure.Content ({
         },
         set Date(date) {
             this.State.Date = date;
+        },
+        set DataExist(existOrNoData) {
+            this.State.DataExist = existOrNoData;
         }
     },
 
     State: {
         Tree: [],
-        Date: [Lure.Date(new Date).Format(`DD.MM.YYYY`)],
+        Date: [Lure.Date(), Lure.Date()],
         DataExist: void 0
     },
 
@@ -74,7 +77,7 @@ const SideNavigator = new Lure.Content ({
 
     AfterBuild() {
         this.Load.Show();
-        api.Devisces_Get(-1, -1)
+        api.Devices_Get(-1, -1)
             .then(res => {
                 this.Tree = res;
                 this.Load.Hide();
@@ -82,70 +85,34 @@ const SideNavigator = new Lure.Content ({
 
         this.AddEventListener(`click`, `.btn`, (e) => {
             const currentButton = e.currentTarget;
-            if (this.currentButtonMemo === currentButton) return;
-            const objectData = getObjectStats(currentButton.dataset[`objectdata`]);
-            const equipDescription = {
-                Name: objectData[0],
-                ID: objectData[1]
-            };
-            this.GetEquipStatus(equipDescription);
-            const hasChildren = currentButton.dataset[`haschildren`] === `true`;
-            const deviceID = hasChildren ? -1 : equipDescription.ID;
-            const typeID = hasChildren ? typeDict[equipDescription.ID] : -1;
-            api.Devisces_Data_Get(deviceID, typeID, {
-                Then: res => {
-                    const Date = this.State.Date[0];
-                    const filteredByDate = res.filter(el => Lure.Date(el.DateValue).Format(`DD.MM.YYYY`) === Date);
-                    this.State.DataExist = filteredByDate.length > 0 ? `exist` : `no data`;
-                    const result = [];
-                    switch (this.State.DataExist) {
-                        case `exist`:
-                            filteredByDate.map(el => {
-                                el.DateValue = Lure.Date(el.DateValue).Format(`DD.MM.YYYY`);
-                                if (el.Err_Count === 0) {
-                                    el.Status = `noErrors`;
-                                    el.label = `Работает без ошибок`;
-                                    el.color = `#00FF43`;
-                                    return;
-                                }
-                                if (el.OK_Count === 0) {
-                                    el.Status = `noSuccess`;
-                                    el.label = `Не работает`;
-                                    el.color = `#FF2300`;
-                                    return;
-                                }
-                                if (el.OK_Count > el.Err_Count) {
-                                    el.Status = `moreSuccess`;
-                                    el.label = `Есть ошибки`;
-                                    el.color = `#30BE56`;
-                                    return;
-                                }
-                                if (el.OK_Count < el.Err_Count) {
-                                    el.Status = `moreErrors`;
-                                    el.label = `Требует отладки`;
-                                    el.color = `#FF9500`;
-                                }
-                            });
-                            for (let i = 0; i < 24; i++) {
-                                if (filteredByDate.find(el => el.HourValue === i)) {
-                                    const currentData = filteredByDate.find(el => el.HourValue === i);
-                                    result.push(currentData);
-                                }
-                                else {
-                                    result.push({Status: `inactive`, label: `Не активно`, color: `#4D4D4D`});
-                                }
-                            }
-                            Monitoring.SetData(result);
-                            Chart.SetData(result);
-                            break;
-                        case `no data`:
-                            Monitoring.Proto.SetProperty(`InfoMessage`, `За выбранный период нет данных, либо устройство было неактивно`);
-                            Chart.SetData([]);
-                            break;
+            if (this.currentButtonMemo !== currentButton) {
+                const objectData = getObjectStats(currentButton.dataset[`objectdata`]);
+                const equipDescription = {
+                    Name: objectData[0],
+                    ID: objectData[1]
+                };
+                this.GetEquipStatus(equipDescription);
+                const hasChildren = currentButton.dataset[`haschildren`] === `true`;
+                const deviceID = hasChildren ? -1 : equipDescription.ID;
+                const typeID = hasChildren ? typeDict[equipDescription.ID] : -1;
+                const { Date } = this.State,
+                        startDate = Lure.Date(Date[0]).Int,
+                        endDate = Lure.Date(Date[1]).Int;
+                api.Devices_Data_Get(deviceID, typeID, startDate, endDate, {
+                    Then: res => {
+                        this.DataExist = res.length > 0 ? `exist` : `no data`;
+                        switch (this.State.DataExist) {
+                            case `exist`:
+                                return aggregateData(res, startDate, endDate);
+                            case `no data`:
+                                Monitoring.Proto.SetProperty(`InfoMessage`, `За выбранный период нет данных, либо устройство было неактивно`);
+                                Chart.SetData([]);
+                                break;
+                        }
                     }
-                }
-            });
-            this.currentButtonMemo = currentButton;
+                });
+                this.currentButtonMemo = currentButton;
+            }
         });
     }
 });

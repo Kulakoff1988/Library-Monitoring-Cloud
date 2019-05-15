@@ -5,7 +5,6 @@ api.Login(`Admin`, `pass2root`);
 const apiGetDevOld = api.Devices_Get;
 api.Devices_Get = async (a, b) => {
     const res = await apiGetDevOld(a, b);
-    console.log(res);
     return [{
         Name: `Библиотека №1`,
         ID: `Lib`,
