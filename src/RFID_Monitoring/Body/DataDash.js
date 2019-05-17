@@ -43,7 +43,8 @@ const DataDash = new Lure.Content ({
             OnConfirm: () => {
                 const dates = this._PeriodPicker.Date.map(date => Lure.Date(date).DayStart);
                 SideNavigator.Date = dates;
-            }
+            },
+            DateRange: [Lure.Date(), Lure.Date()]
         });
     }
 });

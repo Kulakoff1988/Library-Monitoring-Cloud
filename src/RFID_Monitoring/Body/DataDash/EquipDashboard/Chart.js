@@ -14,7 +14,7 @@ const Chart = new Lure.Content({
     Name: `Chart`,
     Target:`.equipDashboard`,
     Type: `info`,
-    Visible: true,
+    // Visible: true,
     Control: {
         Target: `#stats`
     },
@@ -47,14 +47,17 @@ const Chart = new Lure.Content({
                 Visible: true,
                 Data: []
             },
+            // AxisY: {
+            //   Step: 1
+            // },
             Series: [{
                 Name: 'Количество считываний меток',
                 Color: '#798D00',
                 Data: [],
             }],
             Tooltip: {
-                Format: Tip =>
-                    `<div class="tip">
+                Format: Tip => {
+                    return `<div class="tip">
                         <div class="tip-bg"></div>
                         <div class="tip-value">
                             <div class="l-row">
@@ -63,6 +66,7 @@ const Chart = new Lure.Content({
                             </div>
                         </div>
                     </div>`
+                }
             }
         });
     },
@@ -70,6 +74,7 @@ const Chart = new Lure.Content({
     Methods () {
         this.SetData = function (data = [], axisXData = []) {
             this.chart.Options.Series[0].Data = data;
+            this.chart.Options.Series[0].AxisX.Data = axisXData;
             this.chart.Options.AxisX.Data = axisXData;
             this.chart.Redraw();
         };

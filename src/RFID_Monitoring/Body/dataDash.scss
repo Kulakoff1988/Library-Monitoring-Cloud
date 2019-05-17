@@ -152,9 +152,32 @@
 
       .monitoring {
         display: flex;
-        flex-direction: column;
         padding: 5px;
+        flex-direction: column;
         flex: 1;
+
+        .monitoringState {
+          height: 70px;
+          display: flex;
+          justify-content: space-between;
+
+          div {
+            flex: 1;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+          }
+        }
+
+        .chart {
+          flex: 1;
+          display: flex;
+          justify-content: space-around;
+
+          .l-chart {
+            flex: 1;
+          }
+        }
 
         .colorGradient {
           height: 50px;
@@ -185,50 +208,6 @@
 
           .noSuccess {
             background: $noSuccess;
-          }
-        }
-
-        .timeStep {
-          display: flex;
-          justify-content: space-between;
-
-          .step {
-            flex: 1;
-            text-align: center;
-          }
-        }
-
-        .chartInfo {
-          padding: 10px;
-          flex: 1;
-          display: flex;
-
-          .chart {
-            align-self: center;
-            flex: 1;
-
-            .l-chart {
-            }
-          }
-
-          .activityInfo {
-            width: 55%;
-            display: flex;
-            flex-direction: column;
-            overflow: auto;
-            padding: 5px;
-
-            .logString {
-              margin-top: 5px;
-              margin-bottom: 5px;
-
-              &:nth-child(2n) {
-                background: #00ECFF;
-              }
-              //&:nth-child(2n - 1) {
-              //  background: #00c100;
-              //}
-            }
           }
         }
 
