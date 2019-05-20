@@ -1,0 +1,12 @@
+.body {
+  display: -webkit-flex;
+  flex: 1;
+  padding: 10px;
+
+  div {
+    font-family: 'Arimo', sans-serif;
+  }
+}
+
+@import "Nav/Nav";
+@import "Report/Report";

@@ -1,0 +1,47 @@
+.stats {
+  display: flex;
+  align-items: stretch;
+  flex: 1;
+
+  .forButtons {
+    width: 200px;
+
+    .featuresButtons {
+      margin-top: 20px;
+      font-style: italic;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+
+      .equipName {
+        margin-bottom: 5px;
+        background-color: #793D00;
+        color: white;
+        padding: 10px;
+        cursor: default;
+      }
+
+      .f-buttons {
+        padding-right: 1px;
+
+        .f-button {
+          margin: 5px auto;
+          border-bottom: 1px solid black;
+          border-top: 1px solid black;
+          padding: 5px;
+          cursor: pointer;
+        }
+
+        .f-button:hover {
+          background-color: #C0602F;
+          color: #fff0f0;
+        }
+      }
+    }
+  }
+
+  .statistics {
+    width: 90%;
+    height: 98%;
+  }
+}

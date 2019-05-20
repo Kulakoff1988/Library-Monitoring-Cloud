@@ -4,7 +4,7 @@
   "description": "slaves project on Lure",
   "main": "index.js",
   "scripts": {
-    "ViewStatus": "echo \"Error: no test specified\" && exit 1"
+    "ShowEquipStatButtons": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "KulakovAlex",
   "license": "ISC",

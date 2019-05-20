@@ -1,0 +1,99 @@
+.report {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding-right: 10px;
+  padding-left: 10px;
+  justify-content: space-between;
+
+  .forEqAndFeat{
+    display: flex;
+    justify-content: space-between;
+
+    .equipStatus {
+      display: flex;
+      justify-content: space-around;
+      flex: 1;
+      height: 70px;
+      background: antiquewhite;
+
+      .chosenName {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        width: 500px;
+
+        span {
+          font-family: 'Arimo', sans-serif;
+          font-style: italic;
+          display: block;
+        }
+
+        .statusIcon {
+          width: 50px;
+          height: 50px;
+          background-image: url('img/icon-allChecked.png');
+        }
+      }
+
+      .filter {
+        display: flex;
+        flex-direction: column;
+        padding: 5px;
+
+        .forPeriodPicker {
+          align-self: center;
+        }
+
+        span {
+          font-family: 'Arimo', sans-serif;
+          font-style: italic;
+          align-self: center;
+          margin: 10px auto;
+        }
+      }
+    }
+  }
+
+  .equipDashboardWrapper {
+    margin-top: 10px;
+    flex: 1;
+
+    .equipDashboard {
+      height: 100%;
+      background: antiquewhite;
+      display: flex;
+      flex-direction: column;
+
+      .tables {
+        margin: 5px;
+        display: flex;
+        justify-content: space-around;
+        align-items: stretch;
+        font-family: 'Arimo', sans-serif;
+        font-style: italic;
+
+        .featureChoice {
+          flex: auto;
+          text-align: center;
+          line-height: 3vh;
+        }
+
+        .featureChoice:hover {
+          background-color: #C0602F;
+          color: white;
+          transition: 0.3s;
+          cursor: pointer;
+        }
+
+        .active {
+          background-color: #C0602F;
+          color:white;
+        }
+      }
+    }
+  }
+}
+
+@import 'Monitor/Monitor';
+@import "Statistics/Satistics";
