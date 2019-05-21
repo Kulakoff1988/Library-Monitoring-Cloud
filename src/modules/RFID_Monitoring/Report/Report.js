@@ -17,7 +17,7 @@ const Report = new Lure.Content ({
                     <div class="forEqAndFeat">
                         <div class="equipStatus">
                             <div class="chosenName">
-                                <div class="statusIcon"></div>
+                                <div class="statusIcon {{Status}}"></div>
                                 <span>{{Name}}</span>
                             </div>
                             <div class="filter">
@@ -37,7 +37,7 @@ const Report = new Lure.Content ({
                 </div>`,
     State: {
         Name: `ВСЕ СИСТЕМЫ В НОРМЕ`,
-        Status: "./img/icon-allChecked.png",
+        Status: `ok`,
         Date: [Lure.Date(), Lure.Date()]
     },
 

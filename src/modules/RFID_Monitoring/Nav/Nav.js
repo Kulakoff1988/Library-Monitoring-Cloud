@@ -25,12 +25,17 @@ const Nav = new Lure.Content ({
                 </div>`,
 
     // ControllerConfig: {
-    //     Target: '.tree',
+    //     Target: '.accordion',
     //     Type: 'TreeBuilder',
+    //     Data: [],
     //     SubSelector: '.card-body',
-    //     ListElement: `<div>
-    //                     <div><div class="card-body"></div></div>
-    //
+    //     ListElement: `<div class="card">
+    //                     <div class="card-header" id={{ID}}>
+    //                          <button class="btn" type="button" data-toggle="collapse" aria-expanded="true">
+    //                              <span>{{Name}}</span>
+    //                          </button>
+    //                     </div>
+    //                     <div class="card-body"></div>
     //                   </div>`
     // },
 
@@ -60,6 +65,7 @@ const Nav = new Lure.Content ({
             api.Devices_Get(-1, -1)
                 .then(res => {
                     this.Tree = res;
+                    // this.ControllerConfig.Data = res;
                     this.Load.Hide();
                 });
         };
