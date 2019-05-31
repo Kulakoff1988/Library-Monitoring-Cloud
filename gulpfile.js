@@ -52,8 +52,7 @@ gulp.task(`app`, function() {
 	browserify({
 		entries: src.js,
 		debug: true
-	})
-	.bundle()
+	}).bundle()
 		.on(`error`, function (e) {
 			console.log(e.toString());
         })
