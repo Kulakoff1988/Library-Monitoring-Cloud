@@ -31,7 +31,7 @@ const Statistics = new Lure.Content({
                          </div>
                     </div>
                     <div class="statistics">
-                        <canvas id="statistics-chart"></canvas>
+                        <canvas id="statistics-chart" style="position: absolute"></canvas>
                     </div>
                 </div>`,
 
@@ -43,23 +43,9 @@ const Statistics = new Lure.Content({
             datasets: [{
                 label: 'Количество считываний меток',
                 data: [],
-                // backgroundColor: [
-                // 'rgba(255, 99, 132, 0.2)',
-                // 'rgba(54, 162, 235, 0.2)',
-                // 'rgba(255, 206, 86, 0.2)',
-                // 'rgba(75, 192, 192, 0.2)',
-                // 'rgba(153, 102, 255, 0.2)',
-                // 'rgba(255, 159, 64, 0.2)'
-                // ],
-                // borderColor: [
-                // 'rgba(255, 99, 132, 1)',
-                // 'rgba(54, 162, 235, 1)',
-                // 'rgba(255, 206, 86, 1)',
-                // 'rgba(75, 192, 192, 1)',
-                // 'rgba(153, 102, 255, 1)',
-                // 'rgba(255, 159, 64, 1)'
-                // ],
-                // borderWidth: 1
+                backgroundColor: '#26a5dc',
+                borderColor: '#034982',
+                borderWidth: 1
             }]
         }
     },
@@ -71,12 +57,13 @@ const Statistics = new Lure.Content({
             type: 'bar',
             data: ChartData,
             options: {
+                maintainAspectRatio: false,
                 scales: {
                     yAxes: [{
                         ticks: {
                             beginAtZero: true
                         }
-                    }]
+                    }],
                 }
             }
         });
@@ -120,10 +107,8 @@ const Statistics = new Lure.Content({
             // this.chart.Options.Series[0].AxisX.Data = axisXData;
             // this.chart.Options.AxisX.Data = axisXData;
             // this.chart.Redraw();
-            console.log(ChartData.datasets.data);
-            ChartData.datasets.data = data;
+            ChartData.datasets[0].data = data;
             ChartData.labels = axisXData;
-            console.log(ChartData.datasets.data, ChartData.labels);
             this.chart.update();
         };
 
